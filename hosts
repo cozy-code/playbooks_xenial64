@@ -1,0 +1,19 @@
+# check > ansible -i hosts all -m ping
+[examples]
+#www.example.com ansible_user=momo   ansible_ssh_pass=pass1
+#www.example.org ansible_user=sora   ansible_ssh_pass=pass2
+[init]
+192.168.33.12
+[init:vars]
+ansible_port=22
+ansible_python_interpreter=/usr/bin/python2.7
+ansible_user=ubuntu
+ansible_ssh_private_key_file=~/src/private_key
+
+[webservers]
+192.168.33.12 ansible_ssh_private_key_file=~/src/private_key
+#ansible_user=ubuntu  ansible_port=22 ansible_ssh_private_key_file=~/src/private_key ansible_python_interpreter=/usr/bin/python2.7
+
+[webservers:vars]
+ansible_python_interpreter=/usr/bin/python2.7
+ansible_port=4126

@@ -1,0 +1,6 @@
+---
+# file: group_vars/all
+
+available_ssh_port: 22
+alt_ssh_port: 4126
+ansible_python_interpreter: /usr/bin/python2.7

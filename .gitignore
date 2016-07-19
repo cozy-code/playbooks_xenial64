@@ -1,0 +1,5 @@
+local-configure.yml
+.vagrant/
+*.retry
+*.log
+.DS_Store

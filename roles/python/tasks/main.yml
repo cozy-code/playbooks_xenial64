@@ -1,0 +1,11 @@
+- name: check {{ ansible_python_interpreter }}
+  # shell: if [[ -f "{{ ansible_python_interpreter }}" ]]; then /bin/true; else /bin/false; fi
+  # ignore_errors: True
+  # register: result
+  stat: path="{{ ansible_python_interpreter }}"
+  register: f
+
+- name: install python2.7
+  raw: sudo apt-get update -qq && sudo apt-get install -qq python2.7
+  when: not f.stat.exists
+  # when: result|failed

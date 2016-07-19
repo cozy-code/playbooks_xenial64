@@ -1,0 +1,15 @@
+# - name: bootstrap python 2.7
+#   hosts: all
+#   remote_user: ubuntu
+#   gather_facts: no
+#   tasks:
+#     - raw: sudo apt-get update -qq && sudo apt-get install -qq python2.7
+
+# - name: create working user
+#   hosts: all
+#   remote_user: ubuntu
+#   become: yes
+#   become_user: root
+#   tasks:
+#     - user: name=piyo groups=sudo,adm
+#     - copy: src=~/src/README.txt dest=/home/piyo/
