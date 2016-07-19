@@ -4,7 +4,7 @@
 - name: create working user(s)
   become: yes
   become_user: root
-  user: name={{item.name}} state=present password={{item.password}} groups={{item.groups}}
+  user: name={{item.name}} state=present password={{item.password}} groups={{item.groups}} shell=/bin/bash
   with_items: "{{users}}" #group_vars/all.yml
   tags: users
 
