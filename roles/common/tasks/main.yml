@@ -2,3 +2,4 @@
 # roles/common/tasks/main.yml
 
 - include: users.yml
+- include: network.yml

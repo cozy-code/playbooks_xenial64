@@ -1,0 +1,29 @@
+- name: get hostname
+  shell: "hostname"
+  register: result
+  tags: network
+
+- name: result of hostname
+  debug: msg="{{ result }}"
+  tags: network
+
+- name: add hostname to hosts
+  become: yes
+  become_user: root
+  lineinfile: dest=/etc/hosts state=present create=yes regexp="{{result.stdout}}" line="127.0.0.1 {{result.stdout}}"
+  tags: network
+
+- name: add my certificate files
+  become: yes
+  become_user: root
+  copy: src="{{ item }}" dest="/usr/local/share/ca-certificates/"
+  with_fileglob: "../../keys/*.crt"
+  tags: network
+
+- name: register my certificate filr
+  become: yes
+  become_user: root
+  shell: "update-ca-certificates"
+  tags: network
+
+
