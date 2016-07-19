@@ -1,0 +1,29 @@
+# Virtual Host configuration for [ item.name ]
+#
+# You can move that to a different file under sites-available/ and symlink that
+# to sites-enabled/ to enable it.
+#
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name {{ item.name }};
+
+    root /var/www/sites/{{ item.name }}/html;
+    index index.html;
+    index index.php index.html index.htm index.nginx-debian.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+    }
+
+    location ~ /\.ht {
+        deny  all;
+    }
+
+}

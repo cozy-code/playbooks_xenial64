@@ -1,0 +1,40 @@
+---
+# tasks file for virtual hosts
+
+- name: NGINX | Create virtual host configuration directory
+  file: path='{{ item }}' state=directory owner=root group=root mode=0755
+  with_items:
+    - /etc/nginx/sites-available
+    - /etc/nginx/sites-enabled
+    - /var/www/sites
+  tags: nginx
+
+- name: NGINX | Include virtual host configuration
+  lineinfile: >
+    dest=/etc/nginx/nginx.conf
+    insertafter="/etc/nginx/conf\.d/\*\.conf"
+    line="    include /etc/nginx/sites-enabled/*;"
+    state=present
+    backup=yes
+  tags: nginx
+
+- name: Create virtual host definition
+  template: src=virtualhost.conf.j2 dest=/etc/nginx/sites-available/{{item.name}}
+  with_items: '{{ virtualhosts }}'
+  tags: nginx
+
+- name: Enable virtual hosts
+  file: src=/etc/nginx/sites-available/{{item.name}} dest=/etc/nginx/sites-enabled/{{item.name}} state=link
+  with_items: '{{ virtualhosts }}'
+  tags: nginx
+
+- name: NGINX | Create virtual host directory
+  file: path='/var/www/sites' state=directory owner=root group=root mode=0755
+  tags: nginx
+
+- name: Create virtual host content folders
+  file: path='/var/www/sites/{{ item[1].name }}{{item[0]}}' state=directory owner={{item[1].master}} group={{item[1].master}} mode=0755
+  with_nested:
+    - ['','/html']
+    - '{{ virtualhosts }}'
+  tags: nginx
