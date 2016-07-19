@@ -19,6 +19,13 @@
   with_items: "{{users}}"
   tags: users
 
+- name: copy .bash_profile
+  become: yes
+  become_user: root
+  copy: src="default_bash_profile" dest="/home/{{item.name}}/.bash_profile" owner={{item.name}} group={{item.name}} mode=0644
+  with_items: "{{users}}"
+  tags: users
+
 - name: Ensure /etc/sudoers.d directory is present
   become: yes
   become_user: root
