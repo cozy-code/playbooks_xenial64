@@ -21,3 +21,29 @@
   copy: src="../../keys/id_rsa_{{item.name}}.pub" dest="/home/{{item.name}}/.ssh/authorized_keys" owner={{item.name}} group={{item.name}} mode=0600
   with_items: "{{users}}"
   tags: users
+
+- name: Ensure /etc/sudoers.d directory is present
+  become: yes
+  become_user: root
+  file: path=/etc/sudoers.d state=directory
+  tags: users
+
+- name: Ensure /etc/sudoers.d is scanned by sudo
+  become: yes
+  become_user: root
+  action: lineinfile dest=/etc/sudoers regexp="#includedir\s+/etc/sudoers.d" line="#includedir /etc/sudoers.d"
+  tags: users
+
+- name: Add user to the sudoers
+  become: yes
+  become_user: root
+  action: 'lineinfile dest=/etc/sudoers.d/{{item.name}} state=present create=yes regexp="{{item.name}} .*" line="{{item.name}} ALL=(ALL) NOPASSWD: ALL"'
+  with_items: "{{users}}"
+  tags: users
+
+- name: Ensure /etc/sudoers.d/* file has correct permissions
+  become: yes
+  become_user: root
+  action: file path=/etc/sudoers.d/{{item.name}} mode=0440 state=file owner=root group=root
+  with_items: "{{users}}"
+  tags: users
