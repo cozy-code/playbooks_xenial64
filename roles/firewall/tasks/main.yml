@@ -10,5 +10,3 @@
 - name: open configred ssh port
   ufw: rule=allow port={{ alt_ssh_port }}
 
-- name: open http port
-  ufw: rule=allow port=80 proto=tcp

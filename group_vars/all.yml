@@ -12,3 +12,5 @@ users:
 virtualhosts:
   - { name: test1.virtual.net , master: "admin"}
   - { name: test2.virtual.net , master: "auser"}
+
+mysql_root_password: pass
