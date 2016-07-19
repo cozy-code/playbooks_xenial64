@@ -3,3 +3,6 @@ local-configure.yml
 *.retry
 *.log
 .DS_Store
+
+keys/
+private_key

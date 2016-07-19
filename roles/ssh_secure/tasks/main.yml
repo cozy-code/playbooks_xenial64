@@ -1,33 +1,40 @@
-- name: change SSH port to {{ alt_ssh_port }}
-  become: yes
-  become_user: root
-  lineinfile:
-    dest: "/etc/ssh/sshd_config"
-    regexp: "^Port"
-    line: "Port {{ alt_ssh_port }}"
+- name: ping system
+  # wait_for: port=22 host="{{ ansible_ssh_host }}" connect_timeout=2 timeout=2 state="started"
+  ping:
+  ignore_errors: True
+  register: default_ssh
+  failed_when: "cannot connect "
 
-- name: disable password login
-  become: yes
-  become_user: root
-  lineinfile:
-    dest: "/etc/ssh/sshd_config"
-    regexp: "^PasswordAuthentication"
-    line: "PasswordAuthentication no"
+# - name: change SSH port to {{ alt_ssh_port }}
+#   become: yes
+#   become_user: root
+#   lineinfile:
+#     dest: "/etc/ssh/sshd_config"
+#     regexp: "^Port"
+#     line: "Port {{ alt_ssh_port }}"
 
-- name: disable root login
-  become: yes
-  become_user: root
-  lineinfile:
-    dest: "/etc/ssh/sshd_config"
-    regexp: "^PermitRootLogin.*"
-    line: "PermitRootLogin no"
+# - name: disable password login
+#   become: yes
+#   become_user: root
+#   lineinfile:
+#     dest: "/etc/ssh/sshd_config"
+#     regexp: "^PasswordAuthentication"
+#     line: "PasswordAuthentication no"
 
-- name: sshd restart
-  become: yes
-  become_user: root
-  service: name=sshd state=restarted
+# - name: disable root login
+#   become: yes
+#   become_user: root
+#   lineinfile:
+#     dest: "/etc/ssh/sshd_config"
+#     regexp: "^PermitRootLogin.*"
+#     line: "PermitRootLogin no"
 
-- name: set port to {{ alt_ssh_port }}
-  set_fact:
-    ansible_port: "{{ alt_ssh_port }}"
-    available_ssh_port: "{{ alt_ssh_port }}"
+# - name: sshd restart
+#   become: yes
+#   become_user: root
+#   service: name=sshd state=restarted
+
+# - name: set port to {{ alt_ssh_port }}
+#   set_fact:
+#     ansible_port: "{{ alt_ssh_port }}"
+#     available_ssh_port: "{{ alt_ssh_port }}"

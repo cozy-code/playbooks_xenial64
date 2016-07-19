@@ -1,6 +1,8 @@
 ---
 # file: webservers.yml
-- hosts: webservers
-  remote_user: ubuntu
+- name: setup Web server
+  hosts: webservers
+  vars:
+    ansible_port: "{{ alt_ssh_port }}"
   roles:
     - common

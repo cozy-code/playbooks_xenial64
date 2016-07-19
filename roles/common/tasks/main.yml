@@ -1,2 +1,23 @@
 ---
 # roles/common/tasks/main.yml
+
+- name: create working user(s)
+  become: yes
+  become_user: root
+  user: name={{item.name}} state=present password={{item.password}} groups={{item.groups}}
+  with_items: "{{users}}" #group_vars/all.yml
+  tags: users
+
+- name: create ~/.ssh for users
+  become: yes
+  become_user: root
+  file: path="/home/{{item.name}}/.ssh" state=directory owner={{item.name}} group={{item.name}} mode=0700
+  with_items: "{{users}}"
+  tags: users
+
+- name: authorized keys is deployed
+  become: yes
+  become_user: root
+  copy: src="../../keys/id_rsa_{{item.name}}.pub" dest="/home/{{item.name}}/.ssh/authorized_keys" owner={{item.name}} group={{item.name}} mode=0600
+  with_items: "{{users}}"
+  tags: users

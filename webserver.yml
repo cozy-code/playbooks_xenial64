@@ -1,8 +1,0 @@
-- name: detecting ssh port
-  hosts: init
-  gather_facts: no
-  roles:
-    - python
-    - ssh_port
-    - ssh_secure
-    - firewall

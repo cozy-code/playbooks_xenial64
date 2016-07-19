@@ -1,6 +1,10 @@
 ---
 # file: group_vars/all
 
-available_ssh_port: 22
 alt_ssh_port: 4126
 ansible_python_interpreter: /usr/bin/python2.7
+
+#openssl passwd -1 hogehoge
+users:
+  - { name: admin,  password: "1$JpAWXVtv$zTBLMOh.fTP5V3pakL74c0", groups: "sudo,adm" }
+  - { name: auser,  password: "1$JpAWXVtv$zTBLMOh.fTP5V3pakL74c0", groups: "sudo,adm" }
