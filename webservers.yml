@@ -7,3 +7,4 @@
     ansible_port: "{{ alt_ssh_port }}"
   roles:
     - common
+    - firewall
