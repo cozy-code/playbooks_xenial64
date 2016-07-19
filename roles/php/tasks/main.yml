@@ -1,2 +1,32 @@
 ---
 # tasks file for php
+
+- name: PHP | Updating apt cache
+  apt:
+    update_cache: yes
+  tags: php
+
+- name: PHP | Installing PHP packages
+  apt: name={{ item }} update_cache=yes state=latest
+  with_items:
+      - php
+      - php-mysql
+      - php-mbstring
+      - php-gd
+      - php-fpm
+  tags: php
+
+- name: PHP | Update php.ini
+  shell: find /etc/php -name php.ini
+  register: result
+  tags:
+    - php
+    - test
+
+- lineinfile: dest="{{ item }}"
+    regexp='^;?cgi.fix_pathinfo='
+    line='cgi.fix_pathinfo=0'
+  with_items: '{{result.stdout_lines}}'
+  tags:
+    - php
+

@@ -11,3 +11,4 @@
     - common
     - firewall
     - nginx
+    - php

@@ -2,6 +2,8 @@
 # ansible-playbook -i hosts ansible_init.yml
 - name: setup ansible component
   hosts: init
+  vars:
+    ansible_port: 22
   gather_facts: no
   tasks:
     - name: install python2.7
@@ -9,6 +11,8 @@
 
 - name: setup SSH
   hosts: init
+  vars:
+    ansible_port: 22
   tasks:
     - name: change SSH port to {{ alt_ssh_port }}
       become: yes

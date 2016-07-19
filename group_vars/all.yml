@@ -8,3 +8,7 @@ ansible_python_interpreter: /usr/bin/python2.7
 users:
   - { name: admin,  password: "1$JpAWXVtv$zTBLMOh.fTP5V3pakL74c0", groups: "sudo,adm" }
   - { name: auser,  password: "1$JpAWXVtv$zTBLMOh.fTP5V3pakL74c0", groups: "sudo,adm" }
+
+virtualhosts:
+  - { name: test1.virtual.net , master: "admin"}
+  - { name: test2.virtual.net , master: "auser"}

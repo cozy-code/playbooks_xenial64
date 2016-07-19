@@ -1,24 +1,14 @@
 - name: firewall default policy settings
-  become: yes
-  become_user: root
   ufw: state=enabled policy=deny
 
 - name: firewall log policy settings
-  become: yes
-  become_user: root
   ufw: logging=on
 
 - name: close default ssh port
-  become: yes
-  become_user: root
   ufw: rule=limit port=ssh
 
 - name: open configred ssh port
-  become: yes
-  become_user: root
   ufw: rule=allow port={{ alt_ssh_port }}
 
 - name: open http port
-  become: yes
-  become_user: root
   ufw: rule=allow port=80 proto=tcp
