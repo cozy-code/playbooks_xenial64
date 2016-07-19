@@ -5,6 +5,9 @@
   hosts: webservers
   vars:
     ansible_port: "{{ alt_ssh_port }}"
+  become: yes
+  become_user: root
   roles:
     - common
     - firewall
+    - nginx
