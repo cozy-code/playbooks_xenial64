@@ -1,5 +1,6 @@
 ---
 # file: webservers.yml
+# see: http://knowledge.sakura.ad.jp/tech/3084/
 - name: setup Web server
   hosts: webservers
   vars:
