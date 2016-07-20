@@ -12,3 +12,4 @@
     - firewall
     - nginx
     - php
+    - mysql

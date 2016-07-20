@@ -17,6 +17,7 @@
   with_items:
     - mysql-server
     - mysql-client
+    - python-mysqldb  #needs for ansible
   tags:
     - mysql
 
