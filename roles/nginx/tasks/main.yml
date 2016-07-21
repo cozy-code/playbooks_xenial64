@@ -6,8 +6,3 @@
 - include: nginx.yml
 - include: virtualhost.yml
 
-- name: NGINX | Starting NGINX
-  service:
-    name: nginx
-    state: started
-  tags: nginx

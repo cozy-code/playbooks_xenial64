@@ -38,3 +38,8 @@
     - ['','/html']
     - '{{ virtualhosts }}'
   tags: nginx
+
+- name: Put virtual host test index.php
+  template: src=index.php.j2 dest=/var/www/sites/{{item.name}}/html/index.php
+  with_items: '{{ virtualhosts }}'
+  tags: nginx

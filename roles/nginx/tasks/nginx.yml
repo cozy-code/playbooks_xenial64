@@ -24,3 +24,20 @@
     pkg: nginx
     state: latest
   tags: nginx
+
+- name: NGINX | Ensures snipet dir
+  file: path=/etc/nginx/snippets state=directory
+  tags: nginx
+
+- name: NGINX | Installing Snipet files
+  copy: src="fastcgi-php.conf" dest="/etc/nginx/snippets/fastcgi-php.conf" mode=0744 directory_mode=yes
+  tags: nginx
+
+- copy: src="fastcgi.conf" dest="/etc/nginx/fastcgi.conf" mode=0744 directory_mode=yes
+  tags: nginx
+
+- name: NGINX | open http/https port
+  ufw: rule=allow port={{item}} proto=tcp
+  with_items: ['http','https']
+  tags: nginx
+
