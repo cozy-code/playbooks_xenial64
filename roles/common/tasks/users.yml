@@ -8,6 +8,11 @@
   with_items: "{{users}}"
   tags: users
 
+# run on management server
+# pb > mkdir keys ; cd keys
+# pb > ssh-keygen -t rsa -f ./id_rsa_{{item.name}}
+# $$> ssh {{item.name}}@{{hostname or ip}} -p {{alt_ssh_port}} -i pathto/keys/id_rsa_{{item.name}}
+# ex> ssh admin@192.168.33.12 -p 4126 -i ./src/playbooks_xenial64/keys/id_rsa_admin
 - name: authorized keys is deployed
   copy: src="../../keys/id_rsa_{{item.name}}.pub" dest="/home/{{item.name}}/.ssh/authorized_keys" owner={{item.name}} group={{item.name}} mode=0600
   with_items: "{{users}}"
