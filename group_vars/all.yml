@@ -24,37 +24,39 @@ virtualhosts:
 mysql_root_password: pass
 
 wordpresses:
-  - {
-    url_scheme: 'http',
-    url_host: 'test1.virtual.net' ,  #don't add / at end
-    url_sub: 'wordpress', #don't add / at end
-    title: 'WordPress Site 1',
-    wp_dir: "/home/admin/public/www/sites/test1.virtual.net/html/wordpress",
-    master: "admin",  #linux user name for web master
-    wp_admin: "wp_admin1",
-    wp_admin_pass: "wp_pass1",
-    wp_admin_email: "admin@test1.virtual.net",
+  - name: "WordPress Site 1"
+    url_scheme: 'http'
+    url_host: 'test1.virtual.net'   #don't add / at end
+    url_sub: 'wordpress' #don't add / at end
+    title: 'WordPress Site 1'
+    wp_dir: "/home/admin/public/www/sites/test1.virtual.net/html/wordpress"
+    master: "admin"  #linux user name for web master
+    wp_admin: "wp_admin1"
+    wp_admin_pass: "wp_pass1"
+    wp_admin_email: "admin@test1.virtual.net"
+    Languages:
+      - ja
     #db
-    dbhost: "localhost",
-    dbname: "test1_wp",
-    dbuser: "test1_user",
-    dbpass: "test1",
-    dbprefix: "w1p_",
-  }
-  - {
-    url_scheme: 'http',
-    url_host: 'test2.virtual.net' ,
-    url_sub: 'wordpress',
-    title: 'WordPress Site 2',
-    wp_dir: "/var/www/sites/test2.virtual.net/html/wordpress",
-    master: "auser",
-    wp_admin: "wp_admin2",
-    wp_admin_pass: "wp_pass2",
-    wp_admin_email: "admin2@test2.virtual.net",
+    dbhost: "localhost"
+    dbname: "test1_wp"
+    dbuser: "test1_user"
+    dbpass: "test1"
+    dbprefix: "w1p_"
+
+  - name: 'WordPress Site 2'
+    url_scheme: 'http'
+    url_host: 'test2.virtual.net'
+    url_sub: 'wordpress'
+    title: 'WordPress Site 2'
+    wp_dir: "/var/www/sites/test2.virtual.net/html/wordpress"
+    master: "auser"
+    wp_admin: "wp_admin2"
+    wp_admin_pass: "wp_pass2"
+    wp_admin_email: "admin2@test2.virtual.net"
+    Languages: []
     #db
-    dbhost: "localhost",
-    dbname: "test2_wp",
-    dbuser: "test2_user",
-    dbpass: "test2",
-    dbprefix: "w2p_",
-  }
+    dbhost: "localhost"
+    dbname: "test2_wp"
+    dbuser: "test2_user"
+    dbpass: "test2"
+    dbprefix: "w2p_"

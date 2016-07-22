@@ -68,6 +68,18 @@
   tags:
     - wordpress
 
+- name: WordPress | Install Languages
+  become: yes
+  become_user: '{{item.0.master}}'
+  shell: wp core language install {{item.1}} --path={{ item.0.wp_dir }}
+    chdir={{ item.0.wp_dir }} creates={{item.0.wp_dir}}/wp-content/languages/{{item.1}}.mo
+  with_subelements:
+    - '{{wordpresses}}'
+    - Languages
+  tags:
+    - wordpress
+    - wp-test
+
 - name: WordPress | Ensures nginx global dir
   file: path=/etc/nginx/global state=directory
   tags:
