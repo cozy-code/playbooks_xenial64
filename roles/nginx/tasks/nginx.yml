@@ -41,3 +41,7 @@
   with_items: ['http','https']
   tags: nginx
 
+- name: give access right for NGINX
+  user: name=nginx groups={{httpd_group}} append=yes
+  tags:
+    - nginx

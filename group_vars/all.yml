@@ -3,6 +3,7 @@
 
 alt_ssh_port: 4126
 ansible_python_interpreter: /usr/bin/python2.7
+httpd_group: www-data
 
 #openssl passwd -1 hogehoge
 users:
@@ -10,7 +11,7 @@ users:
   - { name: auser,  password: "1$JpAWXVtv$zTBLMOh.fTP5V3pakL74c0", groups: "sudo,adm" }
 
 virtualhosts:
-  - { name: test1.virtual.net , master: "admin"}
-  - { name: test2.virtual.net , master: "auser"}
+  - { name: test1.virtual.net , master: "admin", use_home: True}
+  - { name: test2.virtual.net , master: "auser", use_home: False}
 
 mysql_root_password: pass

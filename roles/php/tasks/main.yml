@@ -30,7 +30,3 @@
   tags:
     - php
 
-- name: give access right for NGINX
-  user: name=nginx groups=www-data append=yes
-  tags:
-    - php
