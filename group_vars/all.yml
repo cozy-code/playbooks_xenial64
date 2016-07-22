@@ -25,18 +25,36 @@ mysql_root_password: pass
 
 wordpresses:
   - {
-    site: "test1.virtual.net" ,
-    master: "admin",
-    db_host: "localhost",
-    db_name: "test1_wp",
-    db_user: "test1_user",
-    db_pass: "test1",
+    url_scheme: 'http',
+    url_host: 'test1.virtual.net' ,  #don't add / at end
+    url_sub: 'wordpress', #don't add / at end
+    title: 'WordPress Site 1',
+    wp_dir: "/home/admin/public/www/sites/test1.virtual.net/html/wordpress",
+    master: "admin",  #linux user name for web master
+    wp_admin: "wp_admin1",
+    wp_admin_pass: "wp_pass1",
+    wp_admin_email: "admin@test1.virtual.net",
+    #db
+    dbhost: "localhost",
+    dbname: "test1_wp",
+    dbuser: "test1_user",
+    dbpass: "test1",
+    dbprefix: "w1p_",
   }
   - {
-    site: "test2.virtual.net" ,
+    url_scheme: 'http',
+    url_host: 'test2.virtual.net' ,
+    url_sub: 'wordpress',
+    title: 'WordPress Site 2',
+    wp_dir: "/var/www/sites/test2.virtual.net/html/wordpress",
     master: "auser",
-    db_host: "localhost",
-    db_name: "test2_wp",
-    db_user: "test2_user",
-    db_pass: "test2",
+    wp_admin: "wp_admin2",
+    wp_admin_pass: "wp_pass2",
+    wp_admin_email: "admin2@test2.virtual.net",
+    #db
+    dbhost: "localhost",
+    dbname: "test2_wp",
+    dbuser: "test2_user",
+    dbpass: "test2",
+    dbprefix: "w2p_",
   }

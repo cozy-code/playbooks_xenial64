@@ -2,10 +2,88 @@
 # tasks file for wordpress
 #
 
-- name: download wp-cli
+- name: WordPress | download wp-cli
   get_url: url=https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
     dest=/usr/local/bin/wp validate_certs=no mode=0755
   tags:
     - wordpress
     - wp-cli
 
+
+- name: WordPress | Ensure wordpress folder
+  file: path={{item.wp_dir}} state=directory
+    owner={{item.master}} group={{httpd_group}} mode=0775
+  with_items: '{{wordpresses}}'
+  tags:
+    - wordpress
+
+- name: WordPress | download WordPress
+  become: yes
+  become_user: '{{item.master}}'
+  shell: wp core download
+    chdir='{{item.wp_dir}}/'
+    creates="{{item.wp_dir}}/index.php"
+  with_items: "{{wordpresses}}"
+  tags:
+    - wordpress
+
+- name: WordPress | Create WordPress Database
+  mysql_db: name={{item.dbname}} state=present encoding=utf8
+    login_user=root login_password={{mysql_root_password}}
+  with_items: '{{wordpresses}}'
+  tags:
+    - wordpress
+
+- name: WordPress | Create WordPress Database User
+  mysql_user: name={{item.dbuser}} password={{item.dbpass}} priv={{item.dbname}}.*:ALL
+    state=present login_user=root login_password={{mysql_root_password}}
+  with_items: '{{wordpresses}}'
+  tags:
+    - wordpress
+
+- name: WordPress | Configure WordPress Database
+  become: yes
+  become_user: '{{item.master}}'
+  shell: wp core config --dbname={{item.dbname}} --dbuser={{item.dbuser}} --dbpass={{item.dbpass}} --dbhost={{item.dbhost}}
+    chdir={{item.wp_dir}} creates={{item.wp_dir}}/wp-config.php
+  with_items: '{{wordpresses}}'
+  tags:
+    - wordpress
+
+- name: WordPress | Configure WordPress General Settings
+  become: yes
+  become_user: '{{item.master}}'
+  shell: wp core install --url={{item.url_scheme}}://{{item.url_host}}/{{item.url_sub}} --title="{{item.title}}" --admin_user={{item.wp_admin}} --admin_password={{item.wp_admin_pass}} --admin_email={{item.wp_admin_email }}
+    chdir={{ item.wp_dir }}
+  with_items: '{{wordpresses}}'
+  tags:
+    - wordpress
+
+- name: WordPress | Configure Permalink
+  become: yes
+  become_user: '{{item.master}}'
+  shell: wp rewrite structure '%postname%'
+    chdir={{ item.wp_dir }}
+  with_items: '{{wordpresses}}'
+  tags:
+    - wordpress
+
+- name: WordPress | Ensures nginx global dir
+  file: path=/etc/nginx/global state=directory
+  tags:
+    - wordpress
+
+- name: WordPress | Copy nginx config files
+  template: src=site.wordpress.j2 dest=/etc/nginx/sites-available/{{item.url_host}}.wordpress
+  with_items: '{{wordpresses}}'
+  tags:
+    - wordpress
+
+- name: WordPress | Nginx settings
+  lineinfile: >
+    dest=/etc/nginx/sites-available/{{item.url_host}}
+    insertbefore="^}"
+    line="    include sites-available/{{item.url_host}}.wordpress;"
+  with_items: '{{wordpresses}}'
+  tags:
+    - wordpress
