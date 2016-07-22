@@ -1,0 +1,4 @@
+# wordpress redirect
+location ~ /{{item.url_sub}}/ {
+    try_files $uri $uri/ /{{item.url_sub}}/index.php?q=$uri&$args ;
+}
