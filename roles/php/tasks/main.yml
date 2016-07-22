@@ -14,6 +14,12 @@
       - php-mbstring
       - php-gd
       - php-fpm
+      - php-cgi
+      - php-cli
+      - php-apcu
+      - php-pear
+      - php-xmlrpc
+      - php-mcrypt
   tags: php
 
 - name: PHP | Update php.ini
