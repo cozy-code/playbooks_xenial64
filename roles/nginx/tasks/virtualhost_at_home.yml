@@ -1,0 +1,32 @@
+---
+
+#virtual host on user home
+
+- block:
+  - name: NGINX | Create virtual host contain directory for home
+    file: >
+      path='/home/{{virtualhost.master}}{{subfolder}}' state=directory
+      owner={{virtualhost.master}} group={{httpd_group}} mode=0775
+    with_items:
+      - '/public'
+      - '/public/www'
+      - '/public/www/sites'
+    loop_control:
+      loop_var: subfolder
+
+  - name: Create virtual host content folders for home
+    file: >
+      path='/home/{{virtualhost.master}}/public/www/sites/{{ virtualhost.name }}{{subfolder}}' state=directory
+      owner={{virtualhost.master}} group={{httpd_group}} mode=0775
+    with_items:
+      - ''
+      - '/html'
+    loop_control:
+      loop_var: subfolder
+
+  - name: Link home to nginx document root
+    file: >
+      src='/home/{{virtualhost.master}}/public/www/sites/{{virtualhost.name}}'
+      dest='/var/www/sites/{{virtualhost.name}}'
+      state=link owner={{virtualhost.master}} group={{httpd_group}}
+  when: virtualhost.use_home == True

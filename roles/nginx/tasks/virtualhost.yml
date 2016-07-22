@@ -32,16 +32,6 @@
   file: path='/var/www/sites' state=directory owner=root group=root mode=0755
   tags: nginx
 
-- name: NGINX | Create virtual host contain directory for home
-  file: >
-    path='/home/{{item[1].master}}{{item[0]}}' state=directory
-    owner={{item[1].master}} group={{httpd_group}} mode=0775
-  with_nested:
-    - ['/public','/public/www','/public/www/sites']
-    - '{{ virtualhosts }}'
-  when: item[1].use_home == True
-  tags: nginx
-
 - name: Create virtual host content folders
   file: >
     path='/var/www/sites/{{ item[1].name }}{{item[0]}}' state=directory
@@ -52,24 +42,15 @@
   when: item[1].use_home != True
   tags: nginx
 
-- name: Create virtual host content folders for home
-  file: >
-    path='/home/{{item[1].master}}/public/www/sites/{{ item[1].name }}{{item[0]}}' state=directory
-    owner={{item[1].master}} group={{httpd_group}} mode=0775
-  with_nested:
-    - ['','/html']
-    - '{{ virtualhosts }}'
-  when: item[1].use_home == True
-  tags: nginx
-
-- name: Link home to nginx document root
-  file: >
-    src='/home/{{item.master}}/public/www/sites/{{item.name}}'
-    dest='/var/www/sites/{{item.name}}'
-    state=link owner={{item.master}} group={{httpd_group}}
+- name: include virtual host at home
+  include: virtualhost_at_home.yml
+  vars:
+    virtualhost: '{{item}}'
   with_items: '{{ virtualhosts }}'
   when: item.use_home == True
-  tags: nginx
+  tags:
+    - nginx
+    - nginx-home
 
 - name: Put virtual host test index.php
   template: >
