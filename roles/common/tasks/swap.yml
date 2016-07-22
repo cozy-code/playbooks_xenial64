@@ -1,0 +1,24 @@
+---
+
+
+- name: create swap
+  command: dd if=/dev/zero of={{swapfile_path}} bs=1M count={{ ansible_memtotal_mb * 2 }}
+  register: create_swapfile
+
+- file: path={{swapfile_path}} mode=600
+
+- command: mkswap {{swapfile_path}}
+  register: make_swapfile
+  when: create_swapfile.changed
+
+- command: swapon {{swapfile_path}}
+  when: make_swapfile.changed
+
+- mount:
+    name: swap
+    src: '{{ swapfile_path }}'
+    fstype: swap
+    opts: defaults
+    passno: '0'
+    dump: '0'
+    state: present

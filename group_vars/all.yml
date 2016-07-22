@@ -5,6 +5,11 @@ alt_ssh_port: 4126
 ansible_python_interpreter: /usr/bin/python2.7
 httpd_group: www-data
 
+swapfile_path: /swapfile
+ntp_servers:
+  - ntp1.sakura.ad.jp
+  - ntp.nict.jp
+
 #openssl passwd -1 hogehoge
 users:
   - { name: admin,  password: "1$JpAWXVtv$zTBLMOh.fTP5V3pakL74c0", groups: "sudo,adm" }
@@ -15,3 +20,21 @@ virtualhosts:
   - { name: test2.virtual.net , master: "auser", use_home: False}
 
 mysql_root_password: pass
+
+wordpresses:
+  - {
+    site: "test1.virtual.net" ,
+    master: "admin",
+    db_host: "localhost",
+    db_name: "test1_wp",
+    db_user: "test1_user",
+    db_pass: "test1",
+  }
+  - {
+    site: "test2.virtual.net" ,
+    master: "auser",
+    db_host: "localhost",
+    db_name: "test2_wp",
+    db_user: "test2_user",
+    db_pass: "test2",
+  }

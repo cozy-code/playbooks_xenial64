@@ -1,0 +1,10 @@
+- name: NTP | Installing NTP
+  apt:
+    pkg: ntp
+    state: latest
+  tags: tools
+
+- name: NTP | Configure NTP
+  lineinfile: dest=/etc/ntp.conf line="server {{item}}"
+  with_items: "{{ntp_servers}}"
+  tags: tools
