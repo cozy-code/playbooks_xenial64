@@ -8,3 +8,12 @@
   lineinfile: dest=/etc/ntp.conf line="server {{item}}"
   with_items: "{{ntp_servers}}"
   tags: tools
+
+- name: ZIP | Installing zip/unzip
+  apt:
+    pkg: '{{item}}'
+    state: latest
+  with_items:
+    - zip
+    - unzip
+  tags: tools
