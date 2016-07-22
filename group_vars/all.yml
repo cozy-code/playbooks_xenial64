@@ -6,6 +6,8 @@ ansible_python_interpreter: /usr/bin/python2.7
 httpd_group: www-data
 
 swapfile_path: /swapfile
+swapfile_size: 1024  #1024 #'{{ ansible_memtotal_mb * 2 }}' M bytes
+
 ntp_servers:
   - ntp1.sakura.ad.jp
   - ntp.nict.jp

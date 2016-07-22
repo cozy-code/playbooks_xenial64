@@ -1,20 +1,39 @@
 ---
 
+- command: /bin/true
+  vars:
+    create_swapfile: {}
+    make_swapfile: {}
+  tags:
+    - swap
 
 - name: create swap
-  command: dd if=/dev/zero of={{swapfile_path}} bs=1M count={{ ansible_memtotal_mb * 2 }}
+  shell: dd if=/dev/zero of={{swapfile_path}} bs=1M count={{ swapfile_size }}
+  ignore_errors: yes
   register: create_swapfile
-  when: swapfile_path is defined
+  when: swapfile_size > 0
+  tags:
+    - swap
+
+- debug: msg='{{create_swapfile}}'
+  tags:
+    - swap
 
 - file: path={{swapfile_path}} mode=600
-  when: swapfile_path is defined
+  when: swapfile_size > 0
+  tags:
+    - swap
 
 - command: mkswap {{swapfile_path}}
   register: make_swapfile
-  when: swapfile_path is defined and create_swapfile.changed
+  when: swapfile_size > 0 and create_swapfile|success and create_swapfile.changed
+  tags:
+    - swap
 
 - command: swapon {{swapfile_path}}
-  when: swapfile_path is defined and  make_swapfile.changed
+  when: swapfile_size > 0 and make_swapfile|success and make_swapfile.changed
+  tags:
+    - swap
 
 - mount:
     name: swap
@@ -24,4 +43,25 @@
     passno: '0'
     dump: '0'
     state: present
-  when: swapfile_path is defined and
+  when: swapfile_size > 0 and make_swapfile|success and make_swapfile.changed
+  tags:
+    - swap
+
+- name: disable swap file
+  command: swapoff {{swapfile_path}}
+  ignore_errors: yes
+  when: swapfile_size <= 0
+  tags:
+    - swap
+
+- mount:
+    name: swap
+    src: '{{ swapfile_path }}'
+    fstype: swap
+    opts: defaults
+    passno: '0'
+    dump: '0'
+    state: absent
+  when: swapfile_size <= 0
+  tags:
+    - swap
