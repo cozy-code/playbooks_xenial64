@@ -1,0 +1,20 @@
+---
+# import wordpress site
+
+- name: setup Web server
+  hosts: webservers
+  vars:
+    ansible_port: "{{ alt_ssh_port }}"
+  tasks:
+    - name: Ensure contents folder
+      become: yes
+      become_user: '{{item.name}}'
+      file: path=~/contents state=directory
+      with_items: '{{users}}'
+
+    - name: Copy local contents
+      become: yes
+      become_user: '{{item.name}}'
+      copy: src=~/src/contents/{{item.name}}/ dest=~/contents/
+      ignore_errors: True
+      with_items: '{{users}}'
