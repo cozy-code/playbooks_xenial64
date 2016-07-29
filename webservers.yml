@@ -9,7 +9,7 @@
   become_user: root
   roles:
     - common
-    - firewall
+    - security
     - nginx
     - php
     - mysql
