@@ -1,0 +1,15 @@
+---
+
+- name: fail2ban | Installing fail2ban
+  apt:
+    pkg: fail2ban
+    state: latest
+  tags:
+    - ban
+
+- name: fail2ban | local configure fail2ban
+  template: >
+    src=jail.d/customisation.local.j2 dest=/etc/fail2ban/jail.d/customisation.local
+  tags:
+    - ban
+

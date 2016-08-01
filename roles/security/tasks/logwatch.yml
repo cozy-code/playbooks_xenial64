@@ -1,0 +1,8 @@
+---
+
+- name: logwatch | Installing logwatch
+  apt:
+    pkg: logwatch
+    state: latest
+  tags:
+    - logwatch

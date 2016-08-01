@@ -1,12 +1,9 @@
-- name: firewall default policy settings
-  ufw: state=enabled policy=deny
+---
+# roles/security/tasks/main.yml
 
-- name: firewall log policy settings
-  ufw: logging=on
 
-- name: close default ssh port
-  ufw: rule=limit port=ssh
+- include: firewall.yml
+- include: ban.yml
+- include: logwatch.yml
 
-- name: open configred ssh port
-  ufw: rule=allow port={{ alt_ssh_port }}
-
+#https://www.thefanclub.co.za/how-to/how-secure-ubuntu-1604-lts-server-part-1-basics

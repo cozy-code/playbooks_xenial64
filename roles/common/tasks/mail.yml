@@ -1,0 +1,20 @@
+---
+
+- name: mail | Installing mailutils
+  apt:
+    pkg: mailutils
+  tags: mail
+
+# - name: disable the delivery of non-local mail
+#   lineinfile: >
+#     dest=/etc/postfix/main.cf
+#     create=yes
+#     regexp="^default_transport ="
+#     line="default_transport = error:outside mail is not deliverable"
+#   tags: mail
+
+- name: mail | sendonly setting
+  template: >
+    src=main.cf.j2 dest=/etc/postfix/main.cf
+    backup=yes
+  tags: mail

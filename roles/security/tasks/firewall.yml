@@ -1,0 +1,14 @@
+---
+
+- name: firewall default policy settings
+  ufw: state=enabled policy=deny
+
+- name: firewall log policy settings
+  ufw: logging=on
+
+- name: close default ssh port
+  ufw: rule=limit port=ssh
+
+- name: open configred ssh port
+  ufw: rule=allow port={{ alt_ssh_port }}
+

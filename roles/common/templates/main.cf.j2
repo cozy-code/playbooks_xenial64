@@ -1,0 +1,13 @@
+#サーバーのホスト名
+myhostname = {{ mail_host }}
+#サーバーのドメイン名
+mydomain =  {{ mail_domain }}
+#メールを送信するときのドメイン名
+myorigin = $myhostname
+#ローカルからのメールのみ受けつけ
+inet_interfaces = localhost
+#受け取るべきメールのドメイン
+mydestination = $myhostname
+#メールを送るサーバー
+relayhost = $mydomain
+mynetworks = 127.0.0.1 [::ffff:127.0.0.0]/104 [::1]/128 192.168.11.0/24

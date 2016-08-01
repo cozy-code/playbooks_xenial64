@@ -5,3 +5,4 @@
 - include: network.yml
 - include: tools.yml
 - include: swap.yml
+- include: mail.yml
