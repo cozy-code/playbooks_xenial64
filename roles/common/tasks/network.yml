@@ -1,3 +1,13 @@
+- name: hostname
+  template: >
+    src=hostname.j2 dest=/etc/hostname
+    backup=yes
+  tags: network
+
+- name: register my certificate filr
+  shell: "hostname --file /etc/hostname"
+  tags: network
+
 - name: get hostname
   shell: "hostname"
   register: result
@@ -21,3 +31,7 @@
   tags: network
 
 
+
+- name: sshd restart
+  service: name=networking state=restarted
+  tags: network

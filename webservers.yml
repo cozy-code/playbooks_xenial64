@@ -13,4 +13,4 @@
     - nginx
     - php
     - mysql
-    - wordpress
+#    - wordpress
