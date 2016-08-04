@@ -7,7 +7,7 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name {{ item.name }};
+    server_name {{ item.name }} {{ item.names | join(' ') }};
 
     root /var/www/sites/{{ item.name }}/html;
     index index.html;
