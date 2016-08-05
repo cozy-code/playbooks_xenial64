@@ -11,7 +11,7 @@ ansible_user=ubuntu
 ansible_ssh_private_key_file=~/src/private_key
 
 [webservers]
-192.168.33.12 ansible_ssh_private_key_file=~/src/private_key mail_host=ubuntu-xenial.localdomain mail_domain=ubuntu-xenial
+192.168.33.12 ansible_ssh_private_key_file=~/src/private_key hostname=test1 domainname=virtual.com
 #ansible_user=ubuntu  ansible_port=22 ansible_ssh_private_key_file=~/src/private_key ansible_python_interpreter=/usr/bin/python2.7
 
 [webservers:vars]

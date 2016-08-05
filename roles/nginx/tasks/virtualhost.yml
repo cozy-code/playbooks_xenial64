@@ -16,16 +16,19 @@
     line="    include /etc/nginx/sites-enabled/*;"
     state=present
     backup=yes
+  notify: restart nginx
   tags: nginx
 
 - name: Create virtual host definition
   template: src=virtualhost.conf.j2 dest=/etc/nginx/sites-available/{{item.name}}
   with_items: '{{ virtualhosts }}'
+  notify: restart nginx
   tags: nginx
 
 - name: Enable virtual hosts
   file: src=/etc/nginx/sites-available/{{item.name}} dest=/etc/nginx/sites-enabled/{{item.name}} state=link
   with_items: '{{ virtualhosts }}'
+  notify: restart nginx
   tags: nginx
 
 - name: NGINX | Create virtual host contain directory

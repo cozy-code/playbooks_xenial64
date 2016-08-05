@@ -17,6 +17,7 @@
 - name: WordPress | Copy nginx config files
   template: src=site.wordpress.j2 dest=/etc/nginx/sites-available/{{item.url_host}}.wordpress
   with_items: '{{wordpresses}}'
+  notify: restart nginx
   tags:
     - wordpress
 
@@ -26,5 +27,6 @@
     insertbefore="^}"
     line="    include sites-available/{{item.url_host}}.wordpress;"
   with_items: '{{wordpresses}}'
+  notify: restart nginx
   tags:
     - wordpress

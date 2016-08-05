@@ -2,10 +2,12 @@
   template: >
     src=hostname.j2 dest=/etc/hostname
     backup=yes
+  register: res_hostname
   tags: network
 
 - name: register my certificate filr
   shell: "hostname --file /etc/hostname"
+  when: res_hostname.changed
   tags: network
 
 - name: get hostname
@@ -19,6 +21,7 @@
 
 - name: add hostname to hosts
   lineinfile: dest=/etc/hosts state=present create=yes regexp="{{result.stdout}}" line="127.0.0.1 {{result.stdout}}"
+  notify: sshd restart
   tags: network
 
 - name: add my certificate files
@@ -32,6 +35,3 @@
 
 
 
-- name: sshd restart
-  service: name=networking state=restarted
-  tags: network

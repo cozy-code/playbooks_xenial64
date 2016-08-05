@@ -31,9 +31,11 @@
 
 - name: NGINX | Installing Snipet files
   copy: src="fastcgi-php.conf" dest="/etc/nginx/snippets/fastcgi-php.conf" mode=0744 directory_mode=yes
+  notify: restart nginx
   tags: nginx
 
 - copy: src="fastcgi.conf" dest="/etc/nginx/fastcgi.conf" mode=0744 directory_mode=yes
+  notify: restart nginx
   tags: nginx
 
 - name: NGINX | open http/https port
@@ -43,5 +45,6 @@
 
 - name: give access right for NGINX
   user: name=nginx groups={{httpd_group}} append=yes
+  notify: restart nginx
   tags:
     - nginx

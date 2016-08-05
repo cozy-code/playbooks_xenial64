@@ -1,0 +1,13 @@
+---
+
+- name: update aliases.db
+  shell: /usr/sbin/postalias /etc/aliases
+  tags: mail
+
+- name: reload aliases
+  shell: /usr/bin/newaliases
+  tags: mail
+
+- name: sshd restart
+  service: name=networking state=restarted
+  tags: network

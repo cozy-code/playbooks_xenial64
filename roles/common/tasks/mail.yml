@@ -17,6 +17,9 @@
   template: >
     src=main.cf.j2 dest=/etc/postfix/main.cf
     backup=yes
+  notify:
+    - update aliases.db
+    - reload aliases
   tags: mail
 
 
@@ -25,12 +28,7 @@
     dest=/etc/aliases
     line="root: {{mail_root_alias}}"
   when: mail_root_alias is defined
-  tags: mail
-
-- name: update aliases.db
-  shell: /usr/sbin/postalias /etc/aliases
-  tags: mail
-
-- name: reload aliases
-  shell: /usr/bin/newaliases
+  notify:
+    - update aliases.db
+    - reload aliases
   tags: mail

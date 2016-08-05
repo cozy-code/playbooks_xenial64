@@ -29,4 +29,5 @@
       src='/home/{{virtualhost.master}}/public/www/sites/{{virtualhost.name}}'
       dest='/var/www/sites/{{virtualhost.name}}'
       state=link owner={{virtualhost.master}} group={{httpd_group}}
+    notify: restart nginx
   when: virtualhost.use_home == True
