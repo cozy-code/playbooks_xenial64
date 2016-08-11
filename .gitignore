@@ -6,3 +6,4 @@ local-configure.yml
 
 keys/
 private_key
+*.secret
