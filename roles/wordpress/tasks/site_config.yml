@@ -1,0 +1,19 @@
+---
+# config nginx
+
+- name: WordPress | Copy nginx config files
+  template: src=site.wordpress.j2 dest=/etc/nginx/sites-available/{{item.url_host}}.wordpress
+  with_items: '{{wordpresses}}'
+  notify: restart nginx
+  tags:
+    - wordpress
+
+- name: WordPress | Nginx settings
+  lineinfile: >
+    dest=/etc/nginx/sites-available/{{item.url_host}}
+    insertbefore="^}"
+    line="    include sites-available/{{item.url_host}}.wordpress;"
+  with_items: '{{wordpresses}}'
+  notify: restart nginx
+  tags:
+    - wordpress

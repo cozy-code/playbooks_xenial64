@@ -3,16 +3,21 @@
 #  for set host as knownhost
 # ansible-playbook -i hosts ansible_init.yml
 
-# - name: setup ansible component
-#   hosts: init
-#   vars:
-#     ansible_port: 22
-#   gather_facts: no
-#   tasks:
-#     - name: apt update
-#       raw: sudo apt-get update -qq
-#     - name: install python2.7
-#       raw: sudo apt-get install -qq python2.7
+- name: setup ansible component
+  hosts: init
+  vars:
+    ansible_port: 22
+  gather_facts: no
+  tasks:
+    - name: apt update
+      raw: echo {{ansible_sudo_pass}} | sudo -S apt-get update -qq
+    - name: install python2.7
+      raw: echo {{ansible_sudo_pass}} | sudo -S apt-get install -qq python2.7
+  tags: base
+
+# run on management server
+# pb > mkdir keys ; cd keys
+# pb > ssh-keygen -t rsa -f ./id_rsa_{{ansible_user}}
 
 - name: setup SSH
   hosts: init
@@ -52,3 +57,4 @@
       become: yes
       become_user: root
       service: name=sshd state=restarted
+  tags: sshd
