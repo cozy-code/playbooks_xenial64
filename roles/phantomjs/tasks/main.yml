@@ -1,0 +1,31 @@
+---
+# tasks file for phantomjs
+
+- name: PhantomJS | Install required package
+  apt: name={{ item }} update_cache=yes state=latest
+  with_items:
+    - libfontconfig
+  tags: phantomjs
+
+- name: PhantomJS | Downloading binary package
+  get_url:
+    url: "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2"
+    dest: "/tmp/phantomjs.tar.bz2"
+  tags: phantomjs
+
+- name: PhantomJS | unpack package
+  shell: tar xvjf /tmp/phantomjs.tar.bz2 -C /usr/local/bin/ --overwrite --wildcards '**/bin/phantomjs' --strip-components=2
+  args:
+    chdir: "/tmp"
+  register: result
+  tags: phantomjs
+
+# - debug: var=result.stdout_lines
+#   tags: phantomjs
+
+- name: PhantomJS | Set binary permission
+  file:
+    path: /usr/local/bin/phantomjs
+    state: file
+    mode: 0755
+  tags: phantomjs

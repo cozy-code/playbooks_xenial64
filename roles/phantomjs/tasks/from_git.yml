@@ -1,0 +1,39 @@
+---
+# tasks file for phantomjs
+
+- name: PhantomJS | Install required package
+  apt: name={{ item }} update_cache=yes state=latest
+  with_items:
+    - build-essential
+    - g++
+    - flex
+    - bison
+    - gperf
+    - ruby
+    - perl
+    - libsqlite3-dev
+    - libfontconfig1-dev
+    - libicu-dev
+    - libfreetype6
+    - libssl-dev
+    - libpng-dev
+    - libjpeg-dev
+    - python
+    - libx11-dev
+    - libxext-dev
+  tags: phantomjs
+
+- name: PhantomJS | Downloading source code
+  git: repo=git://github.com/ariya/phantomjs.git
+       dest=/usr/local/src/phantomjs
+       version=2.1.1
+       track_submodules=yes
+  register: result
+  tags: phantomjs
+
+- name: PhantomJS | build
+  shell: python build.py
+  args:
+    chdir: /usr/local/src/phantomjs
+  when: result.changed
+  tags: phantomjs
